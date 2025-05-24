@@ -1,0 +1,28 @@
+# AWS IAM Misconfiguration - Indicators of Concern
+
+# Default IAM Role Patterns
+AmazonSageMaker-ExecutionRole
+AWSGlueServiceRole
+EMR_DefaultRole
+LightsailDefaultServiceRole
+
+# Overly Permissive Policies Often Attached
+AmazonS3FullAccess
+AdministratorAccess
+AmazonEC2FullAccess
+AWSGlueConsoleFullAccess
+
+# Suspicious Actions (When Used by Non-Admin/Default Roles)
+iam:PassRole
+iam:AttachRolePolicy
+sts:AssumeRole
+s3:PutObject
+s3:GetObject
+sagemaker:CreateModel
+glue:CreateJob
+
+# AWS Services Involved
+sagemaker.amazonaws.com
+glue.amazonaws.com
+emr.amazonaws.com
+lightsail.amazonaws.com
