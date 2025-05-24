@@ -11,16 +11,19 @@ A list of key indicators related to IAM misconfiguration, including default role
 
 Sample KQL Queries.txt
 Sample KQL queries to detect abuse of default IAM roles across AWS CloudTrail data via Microsoft Sentinel or other Kusto-compatible tools.
+
 Example Threat Scenario
 An EC2 instance running under a default SageMaker execution role.
 The role has AmazonS3FullAccess and PassRole.
 The attacker uploads a malicious ML model or Glue job.
 Lateral movement occurs to other AWS services with minimal logging or alerts.
+
 Mitigation Guidance
 Audit existing IAM roles for excessive permissions.
 Remove unnecessary default roles or limit their scope.
 Apply least privilege across all IAM policies.
 Monitor for unexpected use of sensitive API actions (PassRole, AssumeRole, GetSecretValue, etc).
+
 References
-The Hacker News Article
+The Hacker News Article: https://thehackernews.com/2025/05/aws-default-iam-roles-found-to-enable.html?m=1
 AWS IAM Documentation: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
