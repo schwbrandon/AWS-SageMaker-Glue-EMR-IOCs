@@ -1,0 +1,27 @@
+// ================================================
+// KQL Threat Hunting Queries - AWS IAM Role Misuse
+// ================================================
+
+// 1. Suspicious usage of default IAM service roles
+CloudAppEvents
+| where CloudApp == "Amazon Web Services"
+| where AccountName has_any (
+    "AmazonSageMaker-ExecutionRole", 
+    "AWSGlueServiceRole", 
+    "EMR_DefaultRole", 
+    "LightsailDefaultServiceRole")
+| project Timestamp, AccountName, ActionType, Resource, IPAddress
+
+// 2. Detect overly permissive actions from non-admin users
+CloudAppEvents
+| where CloudApp == "Amazon Web Services"
+| where ActionType in~ ("PassRole", "AttachRolePolicy", "AssumeRole", "CreateModel", "CreateJob")
+| where AccountName !in~ ("admin", "root")
+| project Timestamp, AccountName, ActionType, Resource, IPAddress
+
+// 3. Look for signs of lateral movement or cross-service interaction
+CloudAppEvents
+| where CloudApp == "Amazon Web Services"
+| where ActionType in~ ("GetObject", "PutObject")
+| where Resource has_any ("s3://", "arn:aws:s3:::")
+| project Timestamp, AccountName, ActionType, Resource, IPAddress
